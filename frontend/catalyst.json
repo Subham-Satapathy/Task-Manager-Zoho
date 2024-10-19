@@ -1,0 +1,6 @@
+{
+  "client": {
+    "source": "task-manager",
+    "plugin": "zcatalyst-cli-plugin-react"
+  }
+}

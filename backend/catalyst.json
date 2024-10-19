@@ -1,0 +1,9 @@
+{
+  "functions": {
+    "targets": [
+      "tasks"
+    ],
+    "ignore": [],
+    "source": "functions"
+  }
+}
