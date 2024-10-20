@@ -165,7 +165,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
         sx={{ mb: 2 }}
       />
       <FormControl fullWidth>
-        <InputLabel>task_priority</InputLabel>
+        <InputLabel>Priority</InputLabel>
         <Select
           name="task_priority"
           value={task.task_priority}

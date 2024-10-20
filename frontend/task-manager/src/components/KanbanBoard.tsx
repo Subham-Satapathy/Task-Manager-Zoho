@@ -22,7 +22,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks, onEditTask, onDeleteTa
   const tasksByStatus = {
     BLOCKED: tasks.filter((task) => task.status?.toUpperCase() === "BLOCKED"),
     "TO DO": tasks.filter((task) => task.status?.toUpperCase() === "TO DO"),
-    "IN PROGRESS": tasks.filter((task) => task.status?.toUpperCase() === "PENDING"),
+    "IN PROGRESS": tasks.filter((task) => ["PENDING", "IN PROGRESS"].includes( task.status?.toUpperCase())),
     COMPLETED: tasks.filter((task) => task.status?.toUpperCase() === "COMPLETED"),
   };
   
