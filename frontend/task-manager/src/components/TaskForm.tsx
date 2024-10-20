@@ -32,7 +32,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
     title: "",
     description: "",
     dueDate: "",
-    priority: "",
+    task_priority: "",
     status: "TO DO",
     ...initialTask,
   });
@@ -160,12 +160,12 @@ const TaskForm: React.FC<TaskFormProps> = ({
         sx={{ mb: 2 }}
       />
       <FormControl fullWidth>
-        <InputLabel>Priority</InputLabel>
+        <InputLabel>task_priority</InputLabel>
         <Select
-          name="priority"
-          value={task.priority}
+          name="task_priority"
+          value={task.task_priority}
           onChange={handleSelectChange}
-          label="Priority"
+          label="task_priority"
           required
           sx={{ mb: 2 }}
         >

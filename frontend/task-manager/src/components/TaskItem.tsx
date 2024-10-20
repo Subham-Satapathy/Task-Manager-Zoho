@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { setPriority } from 'os';
 
 interface TaskItemProps {
   task: Task;
@@ -19,9 +18,9 @@ interface TaskItemProps {
 
 const TaskItem = ({ task, onEdit, onDelete }: TaskItemProps) => {
   
-  const getPriorityColor = (priority: string) => {
+  const getPriorityColor = (task_priority: string) => {
     
-    switch (priority ? priority.toLowerCase(): 'low') {
+    switch (task_priority ? task_priority.toLowerCase(): 'low') {
       case 'low':
         return '#4caf50';
       case 'medium':
@@ -93,10 +92,10 @@ const TaskItem = ({ task, onEdit, onDelete }: TaskItemProps) => {
             color: "#fff",
             fontWeight: "bold",
             fontSize: "0.75rem",
-            backgroundColor: getPriorityColor(task?.priority)
+            backgroundColor: getPriorityColor(task?.task_priority)
           }}
         >
-          {task.priority ?? 'Low'}
+          {task.task_priority ?? 'Low'}
         </Box>
       </Box>
 

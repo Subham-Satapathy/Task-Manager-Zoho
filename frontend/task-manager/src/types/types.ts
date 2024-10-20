@@ -3,6 +3,6 @@ export interface Task {
   title: string;
   description: string;
   dueDate: string;
-  priority: string;
+  task_priority: string;
   status: string;
 }

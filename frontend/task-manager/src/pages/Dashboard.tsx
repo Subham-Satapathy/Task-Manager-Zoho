@@ -30,7 +30,7 @@ const Dashboard = () => {
     title: "",
     description: "",
     dueDate: "",
-    priority: "",
+    task_priority: "",
     status: "",
   });
 
@@ -97,7 +97,7 @@ const Dashboard = () => {
       title: "",
       description: "",
       dueDate: "",
-      priority: "",
+      task_priority: "",
       status: "",
     });
   };
@@ -110,7 +110,7 @@ const Dashboard = () => {
       title: "",
       description: "",
       dueDate: "",
-      priority: "",
+      task_priority: "",
       status: "TO DO",
     });
   };
