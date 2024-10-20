@@ -15,6 +15,10 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks, onEditTask, onDeleteTa
     return <Typography>No tasks available</Typography>; // Provide feedback when no tasks are present
   }
 
+  const handleDeleteTask = async (taskId: number) => {
+    onDeleteTask(taskId);
+  };
+
   const tasksByStatus = {
     BLOCKED: tasks.filter((task) => task.status?.toUpperCase() === "BLOCKED"),
     "TO DO": tasks.filter((task) => task.status?.toUpperCase() === "TO DO"),
@@ -55,7 +59,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks, onEditTask, onDeleteTa
                 <TaskList 
                   tasks={tasksByStatus[status]} 
                   onEditTask={onEditTask} 
-                  onDeleteTask={onDeleteTask} 
+                  onDeleteTask={handleDeleteTask} 
                 />
               </Paper>
             </Grid>

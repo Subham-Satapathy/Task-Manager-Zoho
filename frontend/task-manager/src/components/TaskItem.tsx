@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import { PencilIcon, TrashIcon } from 'lucide-react';
 import {Task} from '../types/types'
 import {
   Typography,
@@ -54,9 +52,7 @@ const TaskItem = ({ task, onEdit, onDelete }: TaskItemProps) => {
   };
 
   const handleDeleteTask = async (taskId: number) => {
-    if (window.confirm("Are you sure you want to delete this task?")) {
-      console.log('Deleted');
-    }
+    onDelete(taskId)
   };
 
   return (
@@ -151,7 +147,7 @@ const TaskItem = ({ task, onEdit, onDelete }: TaskItemProps) => {
           <IconButton
             size="small"
             color="error"
-            onClick={() => handleDeleteTask(task._id)}
+            onClick={() => task.ROWID ? handleDeleteTask(task.ROWID) : ''}
           >
             <DeleteIcon fontSize="small" />
           </IconButton>

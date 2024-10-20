@@ -7,22 +7,23 @@ interface TaskListProps {
   onDeleteTask: (taskId: number) => void;
 }
 
-
 const TaskList = ({ tasks, onEditTask, onDeleteTask }: TaskListProps) => {
+  // Move handleDeleteTask function inside TaskList component
+  const handleDeleteTask = async (taskId: number) => {
+    onDeleteTask(taskId);
+  };
+
   return (
     <div className="space-y-4">
-      {tasks.map((task) => {
-        return (
-          <TaskItem
-            key={task._id}
-            task={task}
-            onEdit={onEditTask}
-            onDelete={onDeleteTask}
-          />
-        );
-      })}
+      {tasks.map((task) => (
+        <TaskItem
+          key={task._id} // Ensure _id exists on the Task type
+          task={task}
+          onEdit={onEditTask}
+          onDelete={handleDeleteTask} // Pass the correct function here
+        />
+      ))}
     </div>
-    
   );
 };
 

@@ -16,7 +16,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/Dashboard.css";
 import MenuIcon from "@mui/icons-material/Menu";
 import KanbanBoard from "../components/KanbanBoard";
-import { fetchTasks } from "../api/tasksApi";
+import { fetchTasks, deleteTask } from "../api/tasksApi";
 
 const Dashboard = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -25,6 +25,7 @@ const Dashboard = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false); // Track if editing
   const [editingTaskId, setEditingTaskId] = useState<number | null>(null); // Track the task being edited
   const [logoutDialogOpen, setLogoutDialogOpen] = useState<boolean>(false); // State for logout dialog
+  const [snackbarMessage, setSnackbarMessage] = useState<string>("");
 
   const [newTask, setNewTask] = useState<Partial<Task>>({
     title: "",
@@ -60,7 +61,12 @@ const Dashboard = () => {
   const handleDeleteTask = async (taskId: number) => {
     if (window.confirm("Are you sure you want to delete this task?")) {
       try {
-        console.log("Deleted");
+        await deleteTask(taskId);
+        // Update the tasks state immediately after deletion
+        loadTasks()
+        // Show success message
+        setSnackbarMessage("Task deleted successfully!");
+        setSnackbarOpen(true);
       } catch (err) {
         setError("Failed to delete task");
       }

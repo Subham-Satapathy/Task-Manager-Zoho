@@ -44,7 +44,13 @@ export const updateTask = async (id: number, task: { title: string; description:
 
 // Function to delete a task
 export const deleteTask = async (id: number) => {
-    await fetch(`${API_BASE_URL}/tasks/${id}`, {
-        method: 'DELETE',
-    });
+    try {
+        const response = await fetch(`${API_BASE_URL}/tasks/${id}`, {
+            method: 'DELETE',
+        });
+        return response.json();
+    } catch (error) {
+        console.log(`Error while deleting task :: ${error}`);
+        throw error
+    }
 };
