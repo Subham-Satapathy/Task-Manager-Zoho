@@ -170,7 +170,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
           name="task_priority"
           value={task.task_priority}
           onChange={handleSelectChange}
-          label="task_priority"
+          label="Priority"
           required
           sx={{ mb: 2 }}
         >

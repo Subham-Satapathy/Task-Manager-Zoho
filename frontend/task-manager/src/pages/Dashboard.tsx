@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  CircularProgress, // Import CircularProgress for loading spinner
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import "../styles/Dashboard.css";
@@ -40,8 +41,6 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
-  // const token = localStorage.getItem("token");
-
   const loadTasks = async () => {
     setLoading(true); // Set loading state to true before fetching
     try {
@@ -62,9 +61,7 @@ const Dashboard = () => {
     if (window.confirm("Are you sure you want to delete this task?")) {
       try {
         await deleteTask(taskId);
-        // Update the tasks state immediately after deletion
-        loadTasks()
-        // Show success message
+        loadTasks(); // Update the tasks state immediately after deletion
         setSnackbarMessage("Task deleted successfully!");
         setSnackbarOpen(true);
       } catch (err) {
@@ -116,7 +113,6 @@ const Dashboard = () => {
   };
 
   const handleLogoutConfirm = () => {
-    // localStorage.removeItem("token");
     navigate("/"); // Redirect to login or home page
   };
 
@@ -144,8 +140,7 @@ const Dashboard = () => {
           <li>
             <a href="#" onClick={handleLogoutClick}>
               Logout
-            </a>{" "}
-            {/* Open logout confirmation */}
+            </a>
           </li>
         </ul>
       </nav>
@@ -163,9 +158,11 @@ const Dashboard = () => {
         />
       </Modal>
 
-      {/* Render the Kanban Board */}
+      {/* Render the Kanban Board or loading spinner */}
       {loading ? (
-        <Typography>Loading tasks...</Typography> // Loading indicator
+        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+          <CircularProgress /> {/* Display loading spinner */}
+        </Box>
       ) : (
         <KanbanBoard
           tasks={tasks}
@@ -179,7 +176,7 @@ const Dashboard = () => {
         open={snackbarOpen}
         autoHideDuration={3000}
         onClose={handleSnackbarClose}
-        message="Task saved successfully!"
+        message={snackbarMessage}
       />
 
       {/* Logout Confirmation Dialog */}
