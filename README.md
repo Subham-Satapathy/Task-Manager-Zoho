@@ -32,7 +32,7 @@ Make sure you have the following installed on your machine:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/task-manager.git
+   git clone https://github.com/Subham-Satapathy/Task-Manager-Zoho.git
 2. Navigate to the project directory:
     cd task-manager
 3. Install the dependencies:
