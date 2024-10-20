@@ -158,7 +158,6 @@ const Dashboard = () => {
           initialTask={newTask}
           onSubmit={() => {
             resetForm(); // Close modal and reset form after submission.
-            console.log('Calling loadTasks() after adding new Task');
             loadTasks() // Pass handleAddTask to update tasks
           }}
           onCancel={resetForm} 

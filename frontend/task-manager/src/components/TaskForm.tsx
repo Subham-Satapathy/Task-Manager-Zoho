@@ -17,7 +17,7 @@ import { createTask, updateTask } from "../api/tasksApi"; // Import API function
 
 interface TaskFormProps {
   initialTask?: Partial<Task>;
-  onSubmit: (task: Partial<Task>) => void;
+  onSubmit: () => void;
   onCancel: () => void;
   isEditing?: boolean;
 }
@@ -61,9 +61,10 @@ const TaskForm: React.FC<TaskFormProps> = ({
   const handleEditTask = async () => {
     setLoading(true);
     try {
-      if(task?.ROWID){
-        await updateTask(task.ROWID, task as Task);
+      if(task?.ROWID){  
+        const response = await updateTask(task.ROWID, task as Task);
         console.log("Edited");
+        onSubmit();
       }else{
         setError('Invalid parameter to update')
       }
@@ -93,7 +94,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
 
       if (response.ok) {
         setSnackbarMessage("Task added successfully!");
-        onSubmit(response.data); // Pass newly created task back to Dashboard
+        onSubmit();
       } else {
         setError("Failed to add task");
         setSnackbarMessage("Failed to add task");
