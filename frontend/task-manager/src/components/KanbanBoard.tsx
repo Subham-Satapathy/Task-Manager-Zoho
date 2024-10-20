@@ -11,11 +11,15 @@ interface KanbanBoardProps {
 }
 
 const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks, onEditTask, onDeleteTask }) => {
+  if (!tasks || tasks.length === 0) {
+    return <Typography>No tasks available</Typography>; // Provide feedback when no tasks are present
+  }
+
   const tasksByStatus = {
-    BLOCKED: tasks.filter((task) => task.status.toUpperCase() === "BLOCKED"),
-    "TO DO": tasks.filter((task) => task.status.toUpperCase() === "TO DO"),
-    "IN PROGRESS": tasks.filter((task) => task.status.toUpperCase() === "PENDING"),
-    COMPLETED: tasks.filter((task) => task.status.toUpperCase() === "COMPLETED"),
+    BLOCKED: tasks.filter((task) => task.status?.toUpperCase() === "BLOCKED"),
+    "TO DO": tasks.filter((task) => task.status?.toUpperCase() === "TO DO"),
+    "IN PROGRESS": tasks.filter((task) => task.status?.toUpperCase() === "PENDING"),
+    COMPLETED: tasks.filter((task) => task.status?.toUpperCase() === "COMPLETED"),
   };
   
 

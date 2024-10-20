@@ -16,7 +16,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/Dashboard.css";
 import MenuIcon from "@mui/icons-material/Menu";
 import KanbanBoard from "../components/KanbanBoard";
-import { fetchTasks } from '../api/tasksApi';
+import { fetchTasks } from "../api/tasksApi";
 
 const Dashboard = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -37,16 +37,19 @@ const Dashboard = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   // const token = localStorage.getItem("token");
 
   const loadTasks = async () => {
+    setLoading(true); // Set loading state to true before fetching
     try {
       const tasksData = await fetchTasks();
       setTasks(tasksData);
     } catch (error) {
-      console.log(`error ocurred while loading tasks:: ${error}`);
-      throw error
+      console.log(`Error occurred while loading tasks: ${error}`);
+    } finally {
+      setLoading(false); // Set loading state to false after fetching
     }
   };
 
@@ -54,24 +57,10 @@ const Dashboard = () => {
     loadTasks();
   }, []);
 
-  // Function to get tasks by status
-  const getTasksByStatus = (status: string) => {
-    return tasks.filter((task) => task.status === status);
-  };
-
-  const handleLogout = () => {
-    if (window.confirm("Are you sure you want to logout?")) {
-      // localStorage.removeItem("token");
-      setIsLoggedIn(false);
-      navigate("/"); // Redirect to login or home page
-    }
-  };
-
   const handleDeleteTask = async (taskId: number) => {
     if (window.confirm("Are you sure you want to delete this task?")) {
       try {
-        console.log('Deleted');
-        
+        console.log("Deleted");
       } catch (err) {
         setError("Failed to delete task");
       }
@@ -83,7 +72,7 @@ const Dashboard = () => {
   };
 
   const handleEditOpen = (task: Task) => {
-    console.log('Edit button clicked');
+    console.log("Edit button clicked");
     setNewTask(task);
     setEditingTaskId(task._id);
     setIsEditing(true);
@@ -147,8 +136,11 @@ const Dashboard = () => {
             </a>
           </li>
           <li>
-             <a href="#" onClick={handleLogoutClick}>Logout</a> {/* Open logout confirmation */}
-           </li>
+            <a href="#" onClick={handleLogoutClick}>
+              Logout
+            </a>{" "}
+            {/* Open logout confirmation */}
+          </li>
         </ul>
       </nav>
 
@@ -158,19 +150,23 @@ const Dashboard = () => {
           initialTask={newTask}
           onSubmit={() => {
             resetForm(); // Close modal and reset form after submission.
-            loadTasks() // Pass handleAddTask to update tasks
+            loadTasks(); // Pass handleAddTask to update tasks
           }}
-          onCancel={resetForm} 
-          isEditing={isEditing} 
+          onCancel={resetForm}
+          isEditing={isEditing}
         />
       </Modal>
 
       {/* Render the Kanban Board */}
-      <KanbanBoard
-        tasks={tasks}
-        onEditTask={handleEditOpen}
-        onDeleteTask={handleDeleteTask}
-      />
+      {loading ? (
+        <Typography>Loading tasks...</Typography> // Loading indicator
+      ) : (
+        <KanbanBoard
+          tasks={tasks}
+          onEditTask={handleEditOpen}
+          onDeleteTask={handleDeleteTask}
+        />
+      )}
 
       {/* Snackbar for feedback */}
       <Snackbar
@@ -181,20 +177,24 @@ const Dashboard = () => {
       />
 
       {/* Logout Confirmation Dialog */}
-      <Dialog open={logoutDialogOpen} onClose={() => setLogoutDialogOpen(false)} sx={{ '& .MuiPaper-root': { borderRadius: '16px' } }}>
-         <DialogTitle>Confirm Logout</DialogTitle>
-         <DialogContent>
-           <Typography>Are you sure you want to log out?</Typography>
-         </DialogContent>
-         <DialogActions>
-           <Button onClick={() => setLogoutDialogOpen(false)} color="primary">
-             Cancel
-           </Button>
-           <Button onClick={handleLogoutConfirm} color="secondary">
-             Logout
-           </Button>
-         </DialogActions>
-       </Dialog>
+      <Dialog
+        open={logoutDialogOpen}
+        onClose={() => setLogoutDialogOpen(false)}
+        sx={{ "& .MuiPaper-root": { borderRadius: "16px" } }}
+      >
+        <DialogTitle>Confirm Logout</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to log out?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setLogoutDialogOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleLogoutConfirm} color="secondary">
+            Logout
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

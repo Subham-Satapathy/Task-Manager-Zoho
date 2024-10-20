@@ -51,13 +51,29 @@ expressApp.post(
       const table = datastore.table("Tasks");
 
       // Create a new task
-      const newTask = {
-        title: req.body?.title,
-        description: req.body?.description || "",
-        status: req.body?.status ?? "Pending", //
-        task_priority: req.body?.task_priority ?? "Low",
-        dueDate: req.body?.dueDate
-      };
+      const newTask = {}
+
+      const { title, description, status, task_priority, dueDate } = req.body;
+
+      if (title) {
+        newTask.title = title;
+      }
+
+      if (description) {
+        newTask.description = description;
+      }
+
+      if (status) {
+        newTask.status = status;
+      }
+
+      if (task_priority) {
+        newTask.task_priority = task_priority;
+      }
+
+      if (dueDate) {
+        newTask.dueDate = dueDate;
+      }
 
       console.log(`newTask :: ${JSON.stringify(newTask)}`);
 
