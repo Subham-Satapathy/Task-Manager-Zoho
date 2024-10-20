@@ -35,6 +35,8 @@ expressApp.post(
   [
     body("title").isString().notEmpty().withMessage("Title is required"),
     body("description").isString().optional(),
+    body("status").isString().optional(),
+    body("dueDate").isString().optional(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -53,6 +55,7 @@ expressApp.post(
         description: req.body?.description || "",
         status: req.body?.status ?? "Pending", //
         task_priority: req.body?.task_priority ?? "Low",
+        dueDate: req.body?.dueDate
       };
 
       console.log(`newTask :: ${JSON.stringify(newTask)}`);
@@ -75,7 +78,7 @@ expressApp.put(
     body("title").isString().optional(),
     body("description").isString().optional(),
     body("status").isString().optional(),
-    body("task_priority").isString().optional(),
+    body("dueDate").isString().optional(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -90,7 +93,7 @@ expressApp.put(
 
       const taskId = req.params.id;
       const updatedData = { ROWID: taskId };
-      const { title, description, status, task_priority } = req.body;
+      const { title, description, status, task_priority, dueDate } = req.body;
 
       if (title) {
         updatedData.title = title;
@@ -106,6 +109,10 @@ expressApp.put(
 
       if (task_priority) {
         updatedData.task_priority = task_priority;
+      }
+
+      if (dueDate) {
+        updatedData.dueDate = dueDate;
       }
 
       console.log(`Updated data : ${JSON.stringify(updatedData)}`);

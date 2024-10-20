@@ -33,14 +33,19 @@ const TaskItem = ({ task, onEdit, onDelete }: TaskItemProps) => {
   };
 
   const getDueDate = () => {
-    const dueDate = new Date(task.dueDate);
-    const currentDate = new Date();
-    const timeDifference = dueDate.getTime() - currentDate.getTime();
-    const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-
-    if (daysRemaining < 0) return 'Overdue';
-    if (daysRemaining === 0) return 'Due Today';
-    return `Due in ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}`;
+    const dueDate = task.dueDate;
+    if(dueDate){
+      const parsedDueDate = new Date(dueDate);
+      const currentDate = new Date();
+      const timeDifference = parsedDueDate.getTime() - currentDate.getTime();
+      const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+  
+      if (daysRemaining < 0) return 'Overdue';
+      if (daysRemaining === 0) return 'Due Today';
+      return `Due in ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}`;
+    }else{
+      return ''
+    }
   };
 
   const handleEditOpen = (task: Task) => {
@@ -123,7 +128,7 @@ const TaskItem = ({ task, onEdit, onDelete }: TaskItemProps) => {
         }}
       >
         <Typography variant="body2" sx={{ color: "#757575" }}>
-          {new Date(task.dueDate).toLocaleDateString()}
+          {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : ''}
         </Typography>
         <Typography
           variant="body2"
@@ -132,25 +137,7 @@ const TaskItem = ({ task, onEdit, onDelete }: TaskItemProps) => {
             marginLeft: "8px", // Add some spacing
           }}
         >
-          {(() => {
-            const dueDate = new Date(task.dueDate);
-            const currentDate = new Date();
-            const timeDifference = dueDate.getTime() - currentDate.getTime(); // in milliseconds
-            const daysRemaining = Math.ceil(
-              timeDifference / (1000 * 60 * 60 * 24)
-            ); // convert to days
-
-            // Return the appropriate message based on days remaining
-            if (daysRemaining < 0) {
-              return "Overdue"; // If due date has passed
-            } else if (daysRemaining === 0) {
-              return "Due Today"; // If due date is today
-            } else {
-              return `Due in ${daysRemaining} day${
-                daysRemaining !== 1 ? "s" : ""
-              }`; // Display remaining days
-            }
-          })()}
+          {getDueDate()}
         </Typography>
         <Box>
           <IconButton
