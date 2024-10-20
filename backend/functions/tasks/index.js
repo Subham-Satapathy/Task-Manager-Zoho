@@ -49,13 +49,13 @@ expressApp.post(
 
       // Create a new task
       const newTask = {
-        title: req.body.title,
-        description: req.body.description || "",
-        status: req.status ?? 'Pending', // Assuming userId is stored in the request
+        title: req.body?.title,
+        description: req.body?.description || "",
+        status: req.body?.status ?? "Pending", //
+        task_priority: req.body?.priority ?? "Low",
       };
 
-	  console.log(`newTask :: ${JSON.stringify(newTask)}`);
-	  
+      console.log(`newTask :: ${JSON.stringify(newTask)}`);
 
       await table.insertRow(newTask);
 
@@ -74,6 +74,8 @@ expressApp.put(
     param("id").isNumeric().withMessage("Task ID must be numeric"),
     body("title").isString().optional(),
     body("description").isString().optional(),
+    body("status").isString().optional(),
+    body("priority").isString().optional(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -87,8 +89,8 @@ expressApp.put(
       const table = datastore.table("Tasks");
 
       const taskId = req.params.id;
-      const updatedData = {ROWID: taskId};
-	  const {title, description, status} = req.body
+      const updatedData = { ROWID: taskId };
+      const { title, description, status, priority } = req.body;
 
       if (title) {
         updatedData.title = title;
@@ -98,12 +100,15 @@ expressApp.put(
         updatedData.description = description;
       }
 
-	  if (status) {
+      if (status) {
         updatedData.status = status;
       }
 
-	  console.log(`Updated data : ${JSON.stringify(updatedData)}`);
-	  
+      if (priority) {
+        updatedData.task_priority = priority;
+      }
+
+      console.log(`Updated data : ${JSON.stringify(updatedData)}`);
 
       // Update the task
       await table.updateRow(updatedData);
@@ -146,33 +151,38 @@ expressApp.delete(
 
 // Function to fetch rows from the 'Tasks' table through pagination
 async function getMyPagedRows(
-	dataStore,
-	hasNext = true,
-	nextToken = undefined,
-	accumulatedData = [] // Array to accumulate the fetched data
-  ) {
-	if (!hasNext) {
-	  return accumulatedData; // Return the accumulated data when no more records
-	}
-  
-	try {
-	  const table = dataStore.table("Tasks"); // Use the correct table name 'Tasks'
-  
-	  // Fetch rows with pagination
-	  const { data, next_token, more_records } = await table.getPagedRows({
-		nextToken,
-		maxRows: 100, // Define the maximum rows to fetch in a single request
-	  });
-  
-	  accumulatedData.push(...data); // Accumulate the fetched rows
-  
-	  // Recursively fetch the next set of records if available
-	  return await getMyPagedRows(dataStore, more_records, next_token, accumulatedData);
-	} catch (err) {
-	  console.error("Error fetching rows:", err.toString()); // Handle any errors
-	  throw err; // Rethrow the error for further handling if necessary
-	}
+  dataStore,
+  hasNext = true,
+  nextToken = undefined,
+  accumulatedData = [] // Array to accumulate the fetched data
+) {
+  if (!hasNext) {
+    return accumulatedData; // Return the accumulated data when no more records
   }
+
+  try {
+    const table = dataStore.table("Tasks"); // Use the correct table name 'Tasks'
+
+    // Fetch rows with pagination
+    const { data, next_token, more_records } = await table.getPagedRows({
+      nextToken,
+      maxRows: 100, // Define the maximum rows to fetch in a single request
+    });
+
+    accumulatedData.push(...data); // Accumulate the fetched rows
+
+    // Recursively fetch the next set of records if available
+    return await getMyPagedRows(
+      dataStore,
+      more_records,
+      next_token,
+      accumulatedData
+    );
+  } catch (err) {
+    console.error("Error fetching rows:", err.toString()); // Handle any errors
+    throw err; // Rethrow the error for further handling if necessary
+  }
+}
 
 // Export the Express app
 module.exports = expressApp;

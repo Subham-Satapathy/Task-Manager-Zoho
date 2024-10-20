@@ -30,8 +30,8 @@ const Dashboard = () => {
     title: "",
     description: "",
     dueDate: "",
-    priority: "Low",
-    status: "Pending",
+    priority: "",
+    status: "",
   });
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -98,7 +98,7 @@ const Dashboard = () => {
       description: "",
       dueDate: "",
       priority: "",
-      status: "Pending",
+      status: "",
     });
   };
 
