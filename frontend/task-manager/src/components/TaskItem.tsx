@@ -49,7 +49,8 @@ const TaskItem = ({ task, onEdit, onDelete }: TaskItemProps) => {
   };
 
   const handleEditOpen = (task: Task) => {
-    console.log('Edited');
+    console.log(`Editing task :${JSON.stringify(task)}`);
+    onEdit(task);
   };
 
   const handleDeleteTask = async (taskId: number) => {

@@ -7,6 +7,7 @@ interface TaskListProps {
   onDeleteTask: (taskId: number) => void;
 }
 
+
 const TaskList = ({ tasks, onEditTask, onDeleteTask }: TaskListProps) => {
   return (
     <div className="space-y-4">

@@ -36,7 +36,8 @@ expressApp.post(
     body("title").isString().notEmpty().withMessage("Title is required"),
     body("description").isString().optional(),
     body("status").isString().optional(),
-    body("dueDate").isString().optional(),
+    body("dueDate").optional(),
+    body("task_priority").isString().optional()
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -78,7 +79,8 @@ expressApp.put(
     body("title").isString().optional(),
     body("description").isString().optional(),
     body("status").isString().optional(),
-    body("dueDate").isString().optional(),
+    body("dueDate").optional(),
+    body("task_priority").isString().optional()
   ],
   async (req, res) => {
     const errors = validationResult(req);

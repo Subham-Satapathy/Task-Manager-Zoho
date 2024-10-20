@@ -61,8 +61,12 @@ const TaskForm: React.FC<TaskFormProps> = ({
   const handleEditTask = async () => {
     setLoading(true);
     try {
-      // await updateTask(task._id, task as Task);
-      console.log("Edited");
+      if(task?.ROWID){
+        await updateTask(task.ROWID, task as Task);
+        console.log("Edited");
+      }else{
+        setError('Invalid parameter to update')
+      }
       setSnackbarMessage("Task updated successfully!");
       setSnackbarOpen(true);
     } catch (error) {

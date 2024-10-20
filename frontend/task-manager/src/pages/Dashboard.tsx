@@ -83,6 +83,7 @@ const Dashboard = () => {
   };
 
   const handleEditOpen = (task: Task) => {
+    console.log('Edit button clicked');
     setNewTask(task);
     setEditingTaskId(task._id);
     setIsEditing(true);

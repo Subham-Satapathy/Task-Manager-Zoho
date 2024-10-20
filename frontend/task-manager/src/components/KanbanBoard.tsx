@@ -11,7 +11,6 @@ interface KanbanBoardProps {
 }
 
 const KanbanBoard: React.FC<KanbanBoardProps> = ({ tasks, onEditTask, onDeleteTask }) => {
-  console.log(`tasks before filter :: ${JSON.stringify(tasks)}`);
   const tasksByStatus = {
     BLOCKED: tasks.filter((task) => task.status.toUpperCase() === "BLOCKED"),
     "TO DO": tasks.filter((task) => task.status.toUpperCase() === "TO DO"),

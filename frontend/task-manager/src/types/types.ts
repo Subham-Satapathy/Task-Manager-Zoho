@@ -5,4 +5,5 @@ export interface Task {
   dueDate: string;
   task_priority: string;
   status: string;
+  ROWID?: number
 }

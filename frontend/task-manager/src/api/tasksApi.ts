@@ -27,7 +27,11 @@ export const createTask = async (task: { title: string; description: string }) =
 
 
 // Function to update a task
-export const updateTask = async (id: number, task: { title: string; description: string }) => {
+export const updateTask = async (id: number, task: { title: string; description: string, status: string, dueDate: string, task_priority: string}) => {
+    console.log(`Invoking ${API_BASE_URL}/tasks/${id}`);
+    console.log(`Updated data :: ${JSON.stringify(task)}`);
+    
+    
     const response = await fetch(`${API_BASE_URL}/tasks/${id}`, {
         method: 'PUT',
         headers: {
